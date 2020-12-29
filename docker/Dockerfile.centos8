@@ -90,6 +90,8 @@ RUN yum update -y \
 WORKDIR /openair-hss/bin
 COPY --from=oai-hss-builder /openair-hss/build/hss_rel14/bin/hss oai_hss
 
+# Copy the necessary libraries and update the library path
+COPY --from=oai-hss-builder /usr/local/lib64/libuv* /usr/local/lib/
 COPY --from=oai-hss-builder /usr/local/lib/libfd* /usr/local/lib/
 COPY --from=oai-hss-builder /usr/local/lib/freeDiameter/* /usr/local/lib/freeDiameter/
 COPY --from=oai-hss-builder /usr/local/lib64/libcassandra.* /lib64/

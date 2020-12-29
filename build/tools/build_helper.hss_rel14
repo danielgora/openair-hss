@@ -337,11 +337,6 @@ check_install_hss_software() {
         ;;
       "centos8")
         $SUDO $INSTALLER install -y wget pkg-config
-        wget --tries=3 --retry-connrefused http://mirror.centos.org/centos/8/AppStream/x86_64/os/Packages/libuv-1.23.1-1.el8.x86_64.rpm
-        $SUDO rpm -i libuv-1.23.1-1.el8.x86_64.rpm
-        wget --tries=3 --retry-connrefused https://download-ib01.fedoraproject.org/pub/epel/8/Modular/x86_64/Packages/l/libuv-devel-1.23.1-1.module_el8+8246+46ee4016.x86_64.rpm
-        $SUDO rpm -i libuv-devel-1.23.1-1.module_el8+8246+46ee4016.x86_64.rpm
-        rm -f libuv-devel-1.23.1-1.module_el8+8246+46ee4016.x86_64.rpm libuv-1.23.1-1.el8.x86_64.rpm
         specific_packages="clang"
         ;;
       "rhel8.2" | "rhel8.3" | "rhel8.4" | "rhel8.5")
@@ -380,6 +375,9 @@ check_install_hss_software() {
      [[ "$(get_distribution_release)" == "rhel8.5" ]]; then
     echo "====== Raphael ===="
     echo "bypassing (already done) : $SUDO $INSTALLER install $OPTION $PACKAGE_LIST"
+    build_libuv
+  elif [[ "$(get_distribution_release)" == "centos8" ]]; then
+    $SUDO $INSTALLER install $OPTION $PACKAGE_LIST
     build_libuv
   else
     $SUDO $INSTALLER install $OPTION $PACKAGE_LIST
